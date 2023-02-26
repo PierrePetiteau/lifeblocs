@@ -1,10 +1,11 @@
+/* eslint-disable react/jsx-pascal-case */
 import React, { CSSProperties, FC, ReactElement } from "react";
-import { enableLegendStateReact } from "@legendapp/state/react";
-import { Legend } from "@legendapp/state/react-components";
-import { Colors } from "@states/ThemeState/colors";
-import { ThemeState } from "@states/ThemeState/ThemeState";
+import { reactive } from "@legendapp/state/react-components";
+import { Colors } from "@states/themeState/colors";
+import { themeState } from "@states/themeState/themeState";
+import { HTMLMotionProps, motion } from "framer-motion";
 
-enableLegendStateReact();
+const Div = reactive(motion.div);
 
 export type Padding = {
   paddingLeft?: CSSProperties["paddingLeft"];
@@ -21,8 +22,8 @@ export type Margin = {
   marginTop?: CSSProperties["marginTop"];
   marginRight?: CSSProperties["marginRight"];
   marginBottom?: CSSProperties["marginBottom"];
-  horizontalMargin?: CSSProperties["margin"];
-  verticalMargin?: CSSProperties["margin"];
+  marginHorizontal?: CSSProperties["margin"];
+  marginVertical?: CSSProperties["margin"];
   margin?: CSSProperties["margin"];
 };
 
@@ -34,7 +35,32 @@ export type Position = {
   bottom?: CSSProperties["bottom"];
 };
 
-type ViewProps = (Padding & Margin & Position) & {
+export type Border = {
+  border?: CSSProperties["border"];
+  borderRadius?: CSSProperties["borderRadius"];
+  borderColor?: keyof Colors;
+  borderWidth?: CSSProperties["borderWidth"];
+};
+
+export type Transformations = {
+  scaleX?: number | string;
+  scaleY?: number | string;
+  scaleZ?: number | string;
+
+  rotateX?: number | string;
+  rotateY?: number | string;
+  rotateZ?: number | string;
+
+  translateX?: number | string;
+  translateY?: number | string;
+  translateZ?: number | string;
+};
+
+export type MotionProps = {
+  motionProps?: HTMLMotionProps<"div">;
+};
+
+export type ViewProps = (Padding & Margin & Position & Border & Transformations & MotionProps) & {
   flex?: CSSProperties["flex"];
   display?: CSSProperties["display"];
   flexDirection?: CSSProperties["flexDirection"];
@@ -44,24 +70,29 @@ type ViewProps = (Padding & Margin & Position) & {
   justifyContent?: CSSProperties["justifyContent"];
   alignItems?: CSSProperties["alignItems"];
   alignSelf?: CSSProperties["alignSelf"];
-  borderRadius?: CSSProperties["borderRadius"];
   width?: CSSProperties["width"];
   height?: CSSProperties["height"];
+  overflow?: CSSProperties["overflow"];
+  scrollBehavior?: CSSProperties["scrollBehavior"];
+  onClick?: () => void;
 
   backgroundColor?: keyof Colors;
   children?: ReactElement | null | (ReactElement | null)[];
 };
 
-export const View: FC<ViewProps> = ({
+const ViewComponent: FC<ViewProps> = ({
+  motionProps = {},
   children,
   backgroundColor,
+  borderColor,
+  onClick,
 
   marginLeft,
   marginTop,
   marginRight,
   marginBottom,
-  horizontalMargin,
-  verticalMargin,
+  marginHorizontal,
+  marginVertical,
 
   paddingLeft,
   paddingTop,
@@ -70,8 +101,30 @@ export const View: FC<ViewProps> = ({
   paddingHorizontal,
   paddingVertical,
 
+  scaleX,
+  scaleY,
+  scaleZ,
+  rotateX,
+  rotateY,
+  rotateZ,
+  translateX,
+  translateY,
+  translateZ,
+
   ...props
 }) => {
+  const transform = [
+    Boolean(scaleX) ? `scaleX(${scaleX})` : null,
+    Boolean(scaleY) ? `scaleY(${scaleY})` : null,
+    Boolean(scaleZ) ? `scaleZ(${scaleZ})` : null,
+    Boolean(rotateX) ? `rotateX(${rotateX}deg)` : null,
+    Boolean(rotateY) ? `rotateY(${rotateY}deg)` : null,
+    Boolean(rotateZ) ? `rotateZ(${rotateZ}deg)` : null,
+    Boolean(translateX) ? `translateX(${translateX})` : null,
+    Boolean(translateY) ? `translateY(${translateY})` : null,
+    Boolean(translateZ) ? `translateZ(${translateZ})` : null,
+  ].filter((v) => v);
+
   const variantStyle: CSSProperties = {
     display: "flex",
     ...props,
@@ -79,13 +132,23 @@ export const View: FC<ViewProps> = ({
     paddingRight: paddingRight ?? paddingHorizontal,
     paddingTop: paddingTop ?? paddingVertical,
     paddingBottom: paddingBottom ?? paddingVertical,
-    marginLeft: marginLeft ?? horizontalMargin,
-    marginRight: marginRight ?? horizontalMargin,
-    marginTop: marginTop ?? verticalMargin,
-    marginBottom: marginBottom ?? verticalMargin,
+    marginLeft: marginLeft ?? marginHorizontal,
+    marginRight: marginRight ?? marginHorizontal,
+    marginTop: marginTop ?? marginVertical,
+    marginBottom: marginBottom ?? marginVertical,
     flexDirection: props.flexDirection ?? "column",
-    backgroundColor: backgroundColor ? ThemeState?.[backgroundColor].get().toString("rgb") : undefined,
+    cursor: onClick ? "pointer" : undefined,
+    userSelect: onClick ? "none" : undefined,
+    backgroundColor: backgroundColor ? themeState?.[backgroundColor].get().toString("rgb") : undefined,
+    borderColor: borderColor ? themeState?.[borderColor].get().toString("rgb") : undefined,
+    transform: transform.length ? transform.join(" ") : undefined,
   };
 
-  return <Legend.div style$={variantStyle}>{children}</Legend.div>;
+  return (
+    <Div {...motionProps} style$={variantStyle} onClick={onClick}>
+      {children}
+    </Div>
+  );
 };
+
+export const View = reactive(ViewComponent);

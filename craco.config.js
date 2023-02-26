@@ -8,7 +8,8 @@ module.exports = {
       "@atoms": path.resolve(__dirname, "src/components/atoms/"),
       "@molecules": path.resolve(__dirname, "src/components/molecules/"),
       "@organisms": path.resolve(__dirname, "src/components/organisms/"),
-      "@helpers": path.resolve(__dirname, "src/components/helpers/"),
+      "@helpers": path.resolve(__dirname, "src/helpers/"),
+      "@navigation": path.resolve(__dirname, "src/navigation/"),
     },
   },
 };

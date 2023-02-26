@@ -5,6 +5,11 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  overscroll-behavior-x: none;
+  overscroll-behavior-y: none;
+  max-width: 100%;
+  overflow-x: hidden;
+  font-size: 10px;
 }
 
 code {
@@ -12,10 +17,16 @@ code {
     monospace;
 }
 
-@font-face {
-  font-family: "andale-mono";
-  src: local("andale-mono"),
-    url("@assets/fonts/andalemo.ttf") format("truetype");
-  font-weight: normal;
+::-webkit-scrollbar {
+  width: 0px;
+  height: 0px;
 }
 
+@font-face {
+  font-family: "Tourney";
+  src: local("Tourney"),
+    url("@assets/fonts/Tourney/Tourney-VariableFont_wdth,wght.ttf") format("truetype-variations");
+    font-weight: 125 950;
+    font-stretch: 75% 125%;
+    font-style: normal;
+}

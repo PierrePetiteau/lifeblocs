@@ -3,37 +3,27 @@ import { View } from "@atoms/View";
 import { Spacer } from "@atoms/Spacer";
 import { Button } from "@atoms/Button";
 import { For } from "@legendapp/state/react";
-import { observable } from "@legendapp/state";
+import { navigate, NavigationListItem, navigationState } from "@states/navigationState/navigationState";
 
-type LeftMenuButton = { id: number; title: string; onClick?: () => void };
-type LeftMenuButtons = { items: LeftMenuButton[]; selection?: number };
+type Props = {};
 
-type Props = {
-  buttons: Omit<LeftMenuButton, "id">[];
-  initialIndex?: number;
-};
-
-export const LeftMenu: FC<Props> = ({ buttons, initialIndex }) => {
-  const { items, selection } = observable<LeftMenuButtons>({
-    items: buttons.map((v, i) => ({ id: i, title: v.title, onClick: v.onClick })),
-    selection: initialIndex,
-  });
-
+export const LeftMenu: FC<Props> = () => {
   return (
-    <View>
+    <View flexBasis={"250px"} position="absolute" top={"50%"} translateY="-50%">
       <Spacer />
       <View paddingHorizontal={"32px"} display="flex" flexDirection="column">
-        <For<LeftMenuButton, LeftMenuButton> each={items}>
+        <For<NavigationListItem, NavigationListItem> each={navigationState.items}>
           {(item) => {
             const onClick = () => {
-              selection?.set(item.id.peek());
+              navigate(item.id.peek());
             };
             return (
-              <View flexDirection="row" verticalMargin={20}>
+              <View flexDirection="row" marginVertical={20}>
                 <Button
                   onClick={onClick}
                   title$={() => item.title.peek()}
-                  variant$={() => (item.id.get() === selection?.get() ? "contained" : "outlined")}
+                  variant={"outlined"}
+                  color$={() => (item.id.get() === navigationState.currentItemId?.get() ? "white" : "secondary")}
                 />
                 <Spacer />
               </View>

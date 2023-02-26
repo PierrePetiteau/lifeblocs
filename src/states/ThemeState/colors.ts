@@ -1,7 +1,7 @@
 import tinycolor from "tinycolor2";
 
 const hex = (hex: tinycolor.ColorInput) => tinycolor(hex);
-const rgba = (hex: tinycolor.ColorInput, alpha: number) => tinycolor(hex).setAlpha(alpha);
+export const rgba = (hex: tinycolor.ColorInput, alpha: number) => tinycolor(hex).setAlpha(alpha);
 
 export type NeutralColors = typeof neutralColors;
 export const neutralColors = {
@@ -54,6 +54,7 @@ export const aliasColors = {
   elevation2: hex("#36383F"),
   text: neutralColors.white,
   border: neutralColors.white,
+  disabled: hex("#36383B"),
 };
 
 export type Colors = typeof colors;

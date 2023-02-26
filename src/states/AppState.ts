@@ -2,7 +2,7 @@ import { observable } from "@legendapp/state";
 import { persistObservable } from "@legendapp/state/persist";
 import { ObservablePersistLocalStorage } from "@legendapp/state/persist-plugins/local-storage";
 
-export const AppState = observable({
+export const appState = observable({
   settings: {
     showSidebar: false,
     theme: "light",
@@ -16,4 +16,4 @@ export const AppState = observable({
   },
 });
 
-persistObservable(AppState, { local: "AppState", persistLocal: ObservablePersistLocalStorage });
+persistObservable(appState, { local: "appState", persistLocal: ObservablePersistLocalStorage });

@@ -4,13 +4,19 @@ import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { enableLegendStateReact } from "@legendapp/state/react";
+import DebugScreen from "@screens/DebugScreen/DebugScreen";
 
 enableLegendStateReact();
+
+// window.onresize = function () {
+//   window.location.reload();
+// };
 
 const root = ReactDOM.createRoot(document.getElementById("root") as HTMLElement);
 root.render(
   <React.StrictMode>
     <App />
+    {/* <DebugScreen /> */}
   </React.StrictMode>
 );
 
