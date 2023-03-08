@@ -1,0 +1,19 @@
+# Work in progress
+
+## done
+
+- Place hardat and react in the same project
+- Create a HelloWorld Contract
+  - Deploy the contract localy
+  - Test the contract localy
+  - Deploy the contract on goerly
+- Create a contract that keep track of all the users address which call a function
+- Create a contract that can create another contract
+- Create a contract that create a contract with msg.sender as owner
+  
+## todo
+
+- Create a contract that create a NFT contract from openzeppelin
+- Implement lifebloc contract from openzeppelin
+- Link the UI with the contract
+- Publish on mainnet + front on github pages
