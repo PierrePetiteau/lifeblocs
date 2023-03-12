@@ -16,6 +16,7 @@ module.exports = {
       "@helpers": path.resolve(__dirname, "src/helpers/"),
       "@navigation": path.resolve(__dirname, "src/navigation/"),
       "@contracts": path.resolve(__dirname, "src/contracts/"),
+      "@constants": path.resolve(__dirname, "src/constants/"),
     },
   },
 };

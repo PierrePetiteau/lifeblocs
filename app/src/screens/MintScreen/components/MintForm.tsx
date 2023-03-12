@@ -37,7 +37,7 @@ export const MintForm = () => {
         <Computed>
           {() => (
             <Button
-              title={mintFormState.currentItemId.get() === "submit" ? "Mint" : "Next"}
+              title={mintFormState.currentItemId.get() === "submit" ? "Sign" : "Next"}
               variant="contained"
               color="primary"
               onClick={() => handlePressNext()}

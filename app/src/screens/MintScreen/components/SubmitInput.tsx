@@ -13,34 +13,24 @@ export const SubmitInput = ({ index }: Props) => {
   return (
     <>
       <Row>
-        <Text variant="callout">{`${index + 1}/${mintFormState.items.length} · Let's be grateful`}</Text>
-        <Spacer horizontal value={4} />
-        <Text variant="headline">☺️</Text>
+        <Text variant="callout">{`${index + 1}/${mintFormState.items.length} · Let’s mint your first badge`}</Text>
+        {/* <Spacer horizontal value={4} />
+        <Text variant="headline">🙌</Text> */}
       </Row>
-      <Spacer value={8} />
+      <Spacer value={16} />
       <motion.div>
         <Row>
-          <Text color="gray10">1. Take a breath</Text>
+          <Text color="gray10">1. Create your contract</Text>
           <Spacer horizontal value={12} />
-          <Text variant="title1">🌬</Text>
+          <Text >✅</Text>
         </Row>
-        <Spacer value={4} />
+        <Spacer value={12} />
         <Row>
-          <Text color="gray10">2. Be in gratitude</Text>
-          <Spacer horizontal value={12} />
-          <Text variant="title1">✨</Text>
-        </Row>
-        <Spacer value={4} />
-        <Row>
-          <Text color="gray10">3. Look at the result</Text>
-          <Spacer horizontal value={12} />
-          <Text variant="title1">🔭</Text>
-        </Row>
-        <Spacer value={4} />
-        <Row>
-          <Text color="gray10">4. When it feel great, just press Mint</Text>
-          <Spacer horizontal value={12} />
-          <Text variant="title1">🚀</Text>
+          <Text color="gray10" style={[styles.darken]}>
+            2. Mint your NFT
+          </Text>
+          {/* <Spacer horizontal value={12} />
+          <Text variant="title1">✅</Text> */}
         </Row>
       </motion.div>
     </>

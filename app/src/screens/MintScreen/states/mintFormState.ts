@@ -1,6 +1,8 @@
 import { observable } from "@legendapp/state";
 import { persistObservable } from "@legendapp/state/persist";
 import { ObservablePersistLocalStorage } from "@legendapp/state/persist-plugins/local-storage";
+import { showSuccessAlert } from "@states/alertsState/alertsModifiers";
+import { buildMeAContract, mintMySuccess } from "@states/lifeblocsContractState/lifeblocsContractModifiers";
 
 export type MintFormInputKey = "message" | "emoji" | "submit";
 export type MintInput = { id: MintFormInputKey; value?: string };
@@ -32,7 +34,18 @@ export const updateField = (id: MintFormInputKey, value: string) => {
 export const getField = (id: MintFormInputKey) => {
   return mintFormState.items.find((v) => v.id === id);
 };
-export const submitForm = () => {};
+
+export const submitForm = async () => {
+  const payload = {
+    emoji: getField("emoji")?.value ?? "",
+    message: getField("message")?.value ?? "",
+  };
+
+  await buildMeAContract();
+  // await mintMySuccess(payload);
+
+  // showSuccessAlert({ id: "mint_succed", message: "NFT minted successfully" });
+};
 
 export const handlePressPrevious = () => {
   const current = mintFormState.currentItemId.peek();

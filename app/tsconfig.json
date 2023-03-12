@@ -25,7 +25,8 @@
       "@organisms/*": ["components/organisms/*"],
       "@helpers/*": ["helpers/*"],
       "@navigation/*": ["navigation/*"],
-      "@contracts/*": ["contracts/*"]
+      "@contracts/*": ["contracts/*"],
+      "@constants/*": ["constants/*"]
     }
   },
   "include": ["src"]
