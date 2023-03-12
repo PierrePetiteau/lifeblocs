@@ -35,19 +35,42 @@ export const syncLifeblocsContract = async (ownerAddress: string) => {
 };
 
 export const buildMeAContract = async () => {
+  if (lifeblocsContractState.contract?.status?.peek() === "available") {
+    showErrorAlert({ message: "Contract already exist" });
+    return;
+  }
+
   if (lifeblocsContractState.contract?.status?.peek() !== "not_found") {
     showErrorAlert({ message: "Contract status is unknow" });
     return;
   }
 
   try {
-    const lifeblocsFactory = new Contract(
-      CONSTANTS.lifeblocsFactoryAddress,
-      CONSTANTS.lifeblocsFactoryAbi,
-      alchemyProvider.getSigner(walletState.accounts[0].peek())
-    );
-    const lifeblocsContractAddress = await lifeblocsFactory.buildMeAContract();
-    lifeblocsContractState.contract.set({ address: lifeblocsContractAddress, status: "available" });
+    // const lifeblocsFactory = new Contract(
+    //   CONSTANTS.lifeblocsFactoryAddress,
+    //   CONSTANTS.lifeblocsFactoryAbi,
+    //   alchemyProvider
+    // );
+    // const res = await lifeblocsFactory.getContractBy(walletState.accounts[0].peek());
+    // console.log("---------", "res", res);
+    // const myContractAddress = "0xD88199d8D562724019fC01841e57ef28B890927D";
+
+
+    // const signer = alchemyProvider.getSigner(walletState.accounts[0].peek());
+    // const lifeblocsFactory = new Contract(CONSTANTS.lifeblocsFactoryAddress, CONSTANTS.lifeblocsFactoryAbi, signer);
+    // const action = "buildMeAContract";
+    // const unsignedTx = await lifeblocsFactory.populateTransaction[action]();
+
+    // const txHash = await window.ethereum.request({
+    //   method: "eth_sendTransaction",
+    //   params: [unsignedTx],
+    // });
+
+    // const txHash = "0x2984c9c95581bf8c2fb289f7874daba86f9eb088f8bf2e8f2c6dcfe677041a2e";
+    // console.log('---------', 'response', response);
+
+    // const lifeblocsContractAddress = await lifeblocsFactory.buildMeAContract();
+    // lifeblocsContractState.contract.set({ address: lifeblocsContractAddress, status: "available" });
   } catch (error) {
     console.log("---------", "error", error);
   }
