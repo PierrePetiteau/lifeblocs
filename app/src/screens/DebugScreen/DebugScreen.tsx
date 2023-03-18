@@ -1,111 +1,125 @@
 import "./DebugScreen.css";
-import { RefObject, useCallback, useEffect, useRef } from "react";
-import { motion, useMotionValue } from "framer-motion";
-import { For, reactive } from "@legendapp/state/react";
+import { motion } from "framer-motion";
+import { For } from "@legendapp/state/react";
 import AppLogo from "@assets/svg/app_logo.svg";
-import { observable } from "@legendapp/state";
+import { observable, ObservableObject } from "@legendapp/state";
+import { device } from "@states/device";
 
 const HEX_EDGE = 166;
 const HEX_HEIGHT = HEX_EDGE * 2;
-const HEX_WIDTH = Math.sqrt(3) * HEX_EDGE;
-const HEX_MARGIN = 20;
+const HEX_WIDTH = HEX_EDGE * 1.732;
+const HEX_MARGIN = 10;
 const HEX_CONTAINER_HEIGHT = HEX_HEIGHT * 0.75;
+const ROW_SHIFT = HEX_MARGIN / 1.732;
 
-const MotionDiv = reactive(motion.div);
-const deltaScroll = 1 / Math.tan(Math.PI / 3);
+const listWidth = device.state.windows.width.peek() * 0.8;
+const hexPerRow = Math.max(1, Math.trunc(listWidth / (HEX_WIDTH + ROW_SHIFT)));
 
-type ItemProps = {
-  containerRef: RefObject<HTMLDivElement>;
+const calculateScrollableContainerHeight = (containerWidth: number) => {
+  const angle = Math.PI / 6; // 30° in radians
+  const visibleHeight = window.innerHeight / Math.cos(angle);
+  const hiddenHeight = Math.tan(angle) * containerWidth;
+
+  return {
+    visible: visibleHeight,
+    hidden: hiddenHeight,
+    total: visibleHeight + hiddenHeight,
+  };
 };
 
-function Item({ containerRef }: ItemProps) {
-  const ref = useRef<HTMLDivElement>(null);
-  const translateX = useMotionValue<string | undefined>(undefined);
+const containerHeight = calculateScrollableContainerHeight(listWidth);
 
-  const updateTranslateX = useCallback(() => {
-    const top = ref.current?.getBoundingClientRect().top ?? 0;
-    translateX.set(`${(window.innerHeight - top) * deltaScroll}px`);
-  }, [translateX]);
+type ItemProps = {
+  index: number;
+};
 
-  const isIntersect = () => {
-    const bottom = ref.current?.getBoundingClientRect().bottom;
-    const top = ref.current?.getBoundingClientRect().top;
+function Item({ index }: ItemProps) {
+  const rowIndex = Math.trunc(index / hexPerRow);
 
-    if (bottom === undefined || bottom < 0) {
-      return false;
-    }
-    if (top === undefined || top > window.innerHeight) {
-      return false;
-    }
-    return true;
-  };
-
-  useEffect(() => {
-    if (isIntersect()) {
-      updateTranslateX();
-    }
-  });
-
-  useEffect(() => {
-    const container = containerRef.current;
-    const handleScroll = () => {
-      if (isIntersect()) {
-        updateTranslateX();
-      }
-    };
-
-    container?.addEventListener("scroll", handleScroll);
-    return () => container?.removeEventListener("scroll", handleScroll);
-  }, [containerRef, translateX, updateTranslateX]);
+  const translateX = rowIndex * (HEX_WIDTH * 0.5 + ROW_SHIFT);
 
   return (
     <div
       style={{
-        flexBasis: HEX_WIDTH,
+        display: "flex",
+        width: HEX_WIDTH,
         height: HEX_CONTAINER_HEIGHT,
-        scrollSnapAlign: "center",
-        backgroundColor: 'red',
-        border: '1px solid black'
+        transform: `translateX(${-translateX}px)`,
       }}
     >
-      <MotionDiv ref={ref} style={{ translate: translateX }}>
-        <motion.img
-          src={AppLogo}
-          height={HEX_HEIGHT}
-          width={HEX_WIDTH}
-          whileHover={{ scale: 1.05 }}
-          style={{
-            clipPath: "polygon(0% 25%, 50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%)",
-            padding: 2,
-          }}
-        />
-      </MotionDiv>
+      <motion.img
+        src={AppLogo}
+        height={HEX_HEIGHT}
+        width={HEX_WIDTH}
+        whileHover={{ scale: 1.05 }}
+        style={{
+          clipPath: "polygon(0% 25%, 50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%)",
+          // padding: 2,
+        }}
+      />
     </div>
   );
 }
 
-const items = observable(Array.from({ length: 99 }, (_, index) => ({ id: index })));
+const items = observable(Array.from({ length: 30 }, (_, index) => ({ id: index })));
 export default function DebugScreen() {
-  const containerRef = useRef<HTMLDivElement>(null);
   return (
-    <motion.div ref={containerRef} style={{ position: "fixed", width: "100vw", height: "100vh", overflow: "auto" }}>
-      <motion.div
+    <div
+      style={{
+        top: 0,
+        bottom: 0,
+        left: 0,
+        right: 0,
+        position: "absolute",
+        overflow: "hidden",
+        backgroundColor: "green",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
+      <div
         style={{
-          width: "70vw",
+          position: "relative",
+          overflowY: "scroll",
+          overflowX: "hidden",
+          transform: "rotate(30deg)",
+          transformOrigin: "center center",
+          height: containerHeight.total,
+          width: listWidth,
+          backgroundColor: "blue",
           display: "flex",
-          flexDirection: "row",
-          flexWrap: "wrap",
-          gap: HEX_MARGIN,
-          paddingTop: `calc(50vh - ${HEX_EDGE}px)`,
-          paddingBottom: `calc(50vh - ${HEX_CONTAINER_HEIGHT}px)`,
+          flexDirection: "column",
         }}
       >
-        <For each={items} optimized>
-          {(item) => {
-            return <Item containerRef={containerRef} />;
+        <div
+          style={{
+            minHeight: containerHeight.hidden + containerHeight.visible / 2 - (HEX_EDGE / 1.732) * 2,
           }}
-        </For>
-      </motion.div>
-    </motion.div>
+        />
+        <div
+          style={{
+            width: listWidth,
+            display: "flex",
+            flexShrink: 0,
+            justifyContent: "center",
+            flexWrap: "wrap",
+            flexDirection: "row",
+            transform: ["rotate(-30deg)"].join(" "),
+            transformOrigin: "top left",
+            gap: HEX_MARGIN,
+            // backgroundColor: "pink",
+            // paddingTop: window.innerHeight / 2 - HEX_CONTAINER_HEIGHT / 2,
+          }}
+        >
+          <For each={items} optimized>
+            {(_item) => {
+              const item = _item as ObservableObject<{ id: number }>;
+              return <Item index={item.id.peek()} />;
+            }}
+          </For>
+        </div>
+      </div>
+    </div>
   );
 }

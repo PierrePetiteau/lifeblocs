@@ -2,16 +2,15 @@ import { Text } from "@atoms/Text";
 import { View } from "@atoms/View";
 import { Spacer } from "@atoms/Spacer";
 import { MouseFollower } from "@atoms/MouseFollower";
-import { walletState } from "@states/walletState/walletState";
 import { Computed } from "@legendapp/state/react";
 import { isAlertAlreadyExist, showSuccessAlert, showWarningAlert } from "@states/alertsState/alertsModifiers";
-import { tryConnectWallet } from "@states/walletState/walletModifiers";
+import { wallet } from "@states/walletState";
 
 export const WalletIndicator = () => {
   return (
     <Computed>
       {() => {
-        const [account] = walletState.accounts.get();
+        const [account] = wallet.state.accounts.get();
         const hasAccount = Boolean(account);
         const onClick = () => {
           if (hasAccount) {
@@ -24,7 +23,7 @@ export const WalletIndicator = () => {
               showWarningAlert(alreadyCopiedAlert);
             }
           } else {
-            tryConnectWallet();
+            wallet.modifiers.tryConnectWallet();
           }
         };
         return (

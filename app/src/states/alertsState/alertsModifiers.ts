@@ -1,7 +1,8 @@
 import { alertsState, AlertType } from "./alertsState";
 
-const showAlert = async (alert: AlertType) => {
+const showAlert = (alert: AlertType) => {
   alertsState.queu.push(alert);
+  return alert.message;
 };
 
 export const isAlertAlreadyExist = (id: string) => {
@@ -18,7 +19,7 @@ export const showSuccessAlert = ({
   color = "green",
   duration = 3000,
 }: Partial<AlertType>) => {
-  showAlert({ id, icon, message, color, duration });
+  return showAlert({ id, icon, message, color, duration });
 };
 
 export const showWarningAlert = ({
@@ -28,7 +29,7 @@ export const showWarningAlert = ({
   color = "orange",
   duration = 3000,
 }: Partial<AlertType>) => {
-  showAlert({ id, icon, message, color, duration });
+  return showAlert({ id, icon, message, color, duration });
 };
 
 export const showErrorAlert = ({
@@ -38,5 +39,5 @@ export const showErrorAlert = ({
   color = "red",
   duration = 3000,
 }: Partial<AlertType>) => {
-  showAlert({ id, icon, message, color, duration });
+  return showAlert({ id, icon, message, color, duration });
 };

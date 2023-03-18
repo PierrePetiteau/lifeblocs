@@ -1,10 +1,10 @@
 import { motion, SVGMotionProps } from "framer-motion";
 
-type Props = Omit<SVGMotionProps<SVGSVGElement>, "fill"> & {
+export type HexagonSVGProps = Omit<SVGMotionProps<SVGSVGElement>, "fill"> & {
   variant?: "disabled" | "darken";
 };
 
-export const HexagonSVG = ({ children, variant, ...props }: Props) => {
+export const HexagonSVG = ({ children, variant, ...props }: HexagonSVGProps) => {
   const _borderColor = () => {
     switch (variant) {
       case "disabled": {

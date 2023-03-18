@@ -1,5 +1,5 @@
 import { showErrorAlert, showWarningAlert } from "@states/alertsState/alertsModifiers";
-import { walletState } from "./walletState";
+import { walletState } from "@states/walletState/walletState";
 
 interface ProviderRpcError extends Error {
   message: string;
@@ -7,7 +7,7 @@ interface ProviderRpcError extends Error {
   data?: unknown;
 }
 
-export const tryConnectWallet = async () => {
+const tryConnectWallet = async () => {
   if (window.ethereum === undefined) {
     showWarningAlert({ message: "Ethereum wallet not detected." });
     return;
@@ -29,4 +29,8 @@ export const tryConnectWallet = async () => {
     }
     walletState.accounts.set([]);
   }
+};
+
+export const walletModifiers = {
+  tryConnectWallet,
 };

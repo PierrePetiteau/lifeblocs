@@ -1,14 +1,16 @@
 import { onAlertsChanged } from "@states/alertsState/alertsListeners";
-import { onLifeblocsContractChanged } from "@states/lifeblocsContractState/lifeblocsContractListeners";
-import { onBrowserAccountsChanged, onWalletAccountsChanged } from "@states/walletState/walletListeners";
+import { device } from "@states/device";
+import { lifeblocs } from "@states/lifeblocsState";
+import { wallet } from "@states/walletState";
 import { useEffect } from "react";
 
 export const useListeners = () => {
   useEffect(() => {
     const listeners = [
-      onBrowserAccountsChanged(),
-      onWalletAccountsChanged(),
-      onLifeblocsContractChanged(),
+      device.listeners.onWindowResize(),
+      wallet.listeners.onBrowserAccountsChanged(),
+      wallet.listeners.onWalletAccountsChanged(),
+      lifeblocs.listeners.onLifeblocsContractChanged(),
       onAlertsChanged(),
     ];
 

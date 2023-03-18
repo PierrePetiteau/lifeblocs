@@ -166,3 +166,15 @@ body {
     position: relative;
   }
   
+  .diagonal-container {
+    overflow-y: scroll;
+    transform: rotate(45deg);
+    transform-origin: top left;
+    height: 2000px; /* set the desired height */
+    width: 2000px; /* set the desired width */
+  }
+  
+  .content {
+    transform: rotate(-45deg);
+    transform-origin: top left;
+  }

@@ -1,9 +1,28 @@
-import { Observable, ObservableArray } from "@legendapp/state";
+import { ObservableArray } from "@legendapp/state";
 import { For } from "@legendapp/state/react";
-import { motion } from "framer-motion";
-import { useEffect, useMemo, useRef } from "react";
+import { useMemo } from "react";
 import { createHexagon, HexagonInput } from "@organisms/HexagonList/helpers/createHexagon";
-import { HexagonListItem, RenderHexagonListItem } from "@organisms/HexagonList/HexagonListItem";
+import {
+  DELTA_XY,
+  HexagonListItem,
+  HEXAGON_LIST_WIDTH,
+  RenderHexagonListItem,
+} from "@organisms/HexagonList/HexagonListItem";
+import { ObservableObject } from "@legendapp/state";
+
+const calculateScrollableContainerHeight = (containerWidth: number) => {
+  const angle = Math.PI / 6; // 30° in radians
+  const visibleHeight = window.innerHeight / Math.cos(angle);
+  const hiddenHeight = Math.tan(angle) * containerWidth;
+
+  return {
+    visible: visibleHeight,
+    hidden: hiddenHeight,
+    total: visibleHeight + hiddenHeight,
+  };
+};
+
+const containerHeight = calculateScrollableContainerHeight(HEXAGON_LIST_WIDTH);
 
 type Props<T> = {
   items: ObservableArray<T[]>;
@@ -12,48 +31,72 @@ type Props<T> = {
 };
 
 export const HexagonList = <T extends { id: number }>({ items, renderItem, itemShape }: Props<T>) => {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const hexagon = useMemo(() => createHexagon(itemShape), [itemShape]);
-
-  /**
-   * developpement feature
-   * refresh items position when resizing window
-   */
-  useEffect(() => {
-    window.onresize = () => {
-      containerRef.current?.scrollTo({ top: containerRef.current?.scrollTop + 1 });
-    };
-  });
+  const shape = useMemo(() => createHexagon(itemShape), [itemShape]);
+  const rowShift = shape.margin / DELTA_XY;
+  const hexPerRow = Math.max(1, Math.trunc(HEXAGON_LIST_WIDTH / (shape.width + rowShift)));
 
   return (
-    <motion.div
-      ref={containerRef}
+    <div
       style={{
-        position: "fixed",
-        width: "100vw",
-        height: `calc(100vh + ${(hexagon.height + hexagon.margin) * 2.25}px)`,
-        overflowY: "auto",
-        overflowX: "hidden",
+        top: 0,
+        bottom: 0,
+        left: 0,
+        right: 0,
+        position: "absolute",
+        overflow: "hidden",
+        paddingLeft: 80,
       }}
     >
-      <motion.div
+      <div
         style={{
-          width: "70vw",
+          position: "relative",
+          top: "50%",
+          left: "50%",
+          overflowY: "scroll",
+          overflowX: "hidden",
+          transform: "translateX(-50%) translateY(-50%) rotate(30deg)",
+          transformOrigin: "center center",
+          height: containerHeight.total,
+          width: HEXAGON_LIST_WIDTH,
           display: "flex",
-          flexDirection: "row",
-          flexWrap: "wrap",
-          gap: hexagon.margin,
-          paddingTop: `calc(50vh - ${hexagon.edge}px)`,
+          flexDirection: "column",
         }}
       >
-        <For each={items} optimized>
-          {(item) => (
-            <HexagonListItem item={item as Observable<T>} shape={hexagon} containerRef={containerRef}>
-              {renderItem}
-            </HexagonListItem>
-          )}
-        </For>
-      </motion.div>
-    </motion.div>
+        <div
+          style={{
+            minHeight: containerHeight.hidden + containerHeight.visible / 2 - (shape.edge / DELTA_XY) * 2,
+          }}
+        />
+        <div
+          style={{
+            width: HEXAGON_LIST_WIDTH,
+            display: "flex",
+            justifyContent: "center",
+            flexWrap: "wrap",
+            flexDirection: "row",
+            transform: ["rotate(-30deg)"].join(" "),
+            transformOrigin: "top left",
+            gap: shape.margin,
+          }}
+        >
+          <For each={items} optimized>
+            {(_item) => {
+              const item = _item as unknown as ObservableObject<T>;
+              const index = item.peek().id;
+
+              // remove last unempty placeholder row
+              if (index >= items.length - (items.length % hexPerRow)) {
+                return <></>;
+              }
+              return (
+                <HexagonListItem index={index} item={item} shape={shape}>
+                  {({ item, shape }) => renderItem({ item, shape })}
+                </HexagonListItem>
+              );
+            }}
+          </For>
+        </div>
+      </div>
+    </div>
   );
 };

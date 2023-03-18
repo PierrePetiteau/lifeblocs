@@ -14,7 +14,7 @@ import { rgba } from "@states/themeState/colors";
 import { AppLogoSVG } from "components/svg/AppLogoSVG";
 import { AppStack } from "@navigation/AppStack";
 import { WalletIndicator } from "@organisms/WalletIndicator";
-import { walletState } from "@states/walletState/walletState";
+import { wallet } from "@states/walletState";
 
 export const AppStackContainer = () => {
   const renderCount = ++useRef(0).current;
@@ -62,7 +62,7 @@ export const AppStackContainer = () => {
       <View flexDirection="row" flex={1}>
         <LeftMenu />
         <Button
-          onClick={() => walletState.accounts.set([])}
+          onClick={() => wallet.state.accounts.set([])}
           right={24}
           bottom={24}
           position="absolute"

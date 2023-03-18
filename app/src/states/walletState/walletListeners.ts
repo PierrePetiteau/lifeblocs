@@ -1,8 +1,8 @@
 import { showSuccessAlert, showWarningAlert } from "@states/alertsState/alertsModifiers";
-import { syncLifeblocsContract } from "@states/lifeblocsContractState/lifeblocsContractModifiers";
+import { lifeblocs } from "@states/lifeblocsState";
 import { walletState } from "@states/walletState/walletState";
 
-export const onBrowserAccountsChanged = () => {
+const onBrowserAccountsChanged = () => {
   const listener = (accounts: string[]) => {
     walletState.accounts.set(accounts);
   };
@@ -11,14 +11,19 @@ export const onBrowserAccountsChanged = () => {
   return () => window.ethereum.removeListener("accountsChanged", listener);
 };
 
-export const onWalletAccountsChanged = () => {
+const onWalletAccountsChanged = () => {
   return walletState.accounts.onChange((accounts) => {
     console.log("---------", "accountsChanged", accounts);
     if (Boolean(accounts.length)) {
-      syncLifeblocsContract(accounts[0]);
+      lifeblocs.modifiers.syncContract(accounts[0]);
       showSuccessAlert({ message: "Wallet successfully connected !" });
     } else {
       showWarningAlert({ message: "Wallet disconnected !" });
     }
   });
+};
+
+export const walletListeners = {
+  onBrowserAccountsChanged,
+  onWalletAccountsChanged,
 };
