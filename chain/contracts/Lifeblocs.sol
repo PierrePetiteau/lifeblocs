@@ -2,67 +2,53 @@
 pragma solidity ^0.8.9;
 
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
+import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Burnable.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 
-contract Lifeblocs is ERC721, Ownable {
+contract Lifeblocs is ERC721, ERC721Burnable, Ownable {
     using Counters for Counters.Counter;
 
-    struct Bloc {
+    struct Lifebloc {
         uint tokenId;
         string emoji;
         string label;
-        string description;
         uint createdAt;
-        bool exist;
     }
 
-    mapping(uint256 => Bloc) public _blocs;
+    mapping(uint256 => Lifebloc) public _lifeblocs;
     Counters.Counter private _tokenIdCounter;
 
-    constructor(address _owner) payable ERC721("Lifeblocs", "LIFE") {
-        transferOwnership(_owner);
-    }
+    constructor() ERC721("Lifeblocs", "LIFE") {}
 
     function safeMint(
         address to,
         string memory emoji,
-        string memory label,
-        string memory description
-    ) public onlyOwner {
+        string memory label
+    ) public {
         uint256 tokenId = _tokenIdCounter.current();
         _tokenIdCounter.increment();
-
         _safeMint(to, tokenId);
-        _blocs[tokenId] = Bloc({
+        _lifeblocs[tokenId] = Lifebloc({
             tokenId: tokenId,
             emoji: emoji,
             label: label,
-            description: description,
-            createdAt: block.timestamp,
-            exist: true
+            createdAt: block.timestamp
         });
     }
 
-    function burn(uint256 tokenId) public {
-        //solhint-disable-next-line max-line-length
-        require(
-            _isApprovedOrOwner(_msgSender(), tokenId),
-            "ERC721: caller is not token owner or approved"
-        );
+    function getLifeFrom(
+        address owner
+    ) public view returns (Lifebloc[] memory) {
+        Lifebloc[] memory life = new Lifebloc[](_tokenIdCounter._value);
 
-        delete _blocs[tokenId];
-        _burn(tokenId);
-    }
-
-    function getMyBlocs() public view returns (Bloc[] memory) {
-        Bloc[] memory blocs = new Bloc[](_tokenIdCounter._value);
-        for (uint i = 0; i < _tokenIdCounter._value; i++) {
-            if (_blocs[i].exist && _isApprovedOrOwner(_msgSender(), i)) {
-                Bloc storage member = _blocs[i];
-                blocs[i] = member;
+        for (uint tokenId = 0; tokenId < _tokenIdCounter._value; tokenId++) {
+            if (owner == _ownerOf(tokenId)) {
+                Lifebloc storage member = _lifeblocs[tokenId];
+                life[tokenId] = member;
             }
         }
-        return blocs;
+
+        return life;
     }
 }

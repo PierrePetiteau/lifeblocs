@@ -1,8 +1,7 @@
 import { ObservableObject } from "@legendapp/state";
-import { ReactElement, useRef } from "react";
+import { ReactElement } from "react";
 import { Hexagon } from "@organisms/HexagonList/helpers/createHexagon";
 import { device } from "@states/device";
-import { Text } from "@atoms/Text";
 
 export const HEXAGON_LIST_WIDTH = device.state.windows.width.peek() * 0.8;
 
@@ -14,16 +13,13 @@ export const DELTA_XY = 1.732; // sqrt(3)
 
 export type RenderHexagonListItem<T> = (props: { item: ObservableObject<T>; shape: Hexagon }) => ReactElement;
 
-type Props<T> = {
+type Props = {
   index: number;
-  item: ObservableObject<T>;
   shape: Hexagon;
-  children?: RenderHexagonListItem<T>;
+  children?: JSX.Element;
 };
 
-export const HexagonListItem = <T extends { id: number }>({ index, item, shape, children }: Props<T>) => {
-  const renderCount = ++useRef(0).current;
-
+export const HexagonListItem = ({ index, shape, children }: Props) => {
   const rowShift = shape.margin / DELTA_XY;
   const hexPerRow = Math.max(1, Math.trunc(HEXAGON_LIST_WIDTH / (shape.width + rowShift)));
   const rowIndex = Math.trunc(index / hexPerRow);
@@ -37,11 +33,9 @@ export const HexagonListItem = <T extends { id: number }>({ index, item, shape, 
         height: shape.containerHeight,
         scrollSnapAlign: "center",
         transform: `translateX(${-translateX}px)`,
-        // backgroundColor: "red",
       }}
     >
-      {children?.({ item, shape })}
-      <Text>{`${renderCount}`}</Text>
+      {children}
     </div>
   );
 };

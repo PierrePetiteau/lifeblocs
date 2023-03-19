@@ -15,7 +15,7 @@ const onWalletAccountsChanged = () => {
   return walletState.accounts.onChange((accounts) => {
     console.log("---------", "accountsChanged", accounts);
     if (Boolean(accounts.length)) {
-      lifeblocs.modifiers.syncContract(accounts[0]);
+      lifeblocs.modifiers.syncUserBlocs();
       showSuccessAlert({ message: "Wallet successfully connected !" });
     } else {
       showWarningAlert({ message: "Wallet disconnected !" });

@@ -51,8 +51,7 @@ export const submitForm = async () => {
   // await lifeblocs.modifiers.mintMySuccess(payload);
   // console.log("---------", "mintMySuccess done");
 
-  await lifeblocs.modifiers.syncContract(wallet.state.accounts[0].peek());
-  await lifeblocs.modifiers.syncContractNfts();
+  await lifeblocs.modifiers.syncUserBlocs();
 
   showSuccessAlert({ id: "mint_succed", message: "NFT minted successfully" });
 };

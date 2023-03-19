@@ -22,30 +22,21 @@ export const HexagonBloc = ({ item, shape }: Props) => {
         minHeight: `${shape.height + 2}px`,
         minWidth: `${shape.width + 2}px`,
       }}
-      whileHover={{ scale: !_item.isPlaceholder ? 1.05 : undefined }}
+      whileHover={{ scale: 1.05 }}
     >
-      <HexagonSVG
-        height={`${shape.height}px`}
-        width={`${shape.width}px`}
-        style={styles.hexagonSVG}
-        variant={_item.isPlaceholder ? "disabled" : undefined}
-      />
-      {!_item.isPlaceholder ? (
-        <>
-          <Spacer value={shape.height / 4} />
-          <motion.div style={styles.emojisContainer}>
-            <Text style={[styles.emoji, { fontSize: "800%" }]} rotateZ={-15}>
-              {_item.emoji}
-            </Text>
-            <Text style={[styles.emoji, { fontSize: "800%" }]} rotateZ={10}>
-              ✨
-            </Text>
-          </motion.div>
-          <motion.div style={styles.labelContainer}>
-            <Text style={[styles.label]}>{_item.label}</Text>
-          </motion.div>
-        </>
-      ) : null}
+      <HexagonSVG height={`${shape.height}px`} width={`${shape.width}px`} style={styles.hexagonSVG} />
+      <Spacer value={shape.height / 4} />
+      <motion.div style={styles.emojisContainer}>
+        <Text style={[styles.emoji, { fontSize: "800%" }]} rotateZ={-15}>
+          {_item.emoji}
+        </Text>
+        <Text style={[styles.emoji, { fontSize: "800%" }]} rotateZ={10}>
+          ✨
+        </Text>
+      </motion.div>
+      <motion.div style={styles.labelContainer}>
+        <Text style={[styles.label]}>{_item.label}</Text>
+      </motion.div>
     </motion.div>
   );
 };
@@ -72,9 +63,6 @@ const styles: StyleSheet = {
   emoji: {
     height: "400%",
   },
-  darken: {
-    filter: "brightness(0.3)",
-  },
   labelContainer: {
     zIndex: 10,
     flex: 0.7,
@@ -86,19 +74,5 @@ const styles: StyleSheet = {
     lineHeight: "3vmin",
     textAlign: "center",
     transform: "rotateZ(-5deg)",
-  },
-  textInput: {
-    border: "3px solid #FFFFFF",
-    backgroundImage: "none",
-    backgroundColor: "transparent",
-    boxShadow: "none",
-    borderRadius: "8px",
-    padding: "10px",
-    width: "24vw",
-  },
-  buttonsRow: {
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "end",
   },
 };

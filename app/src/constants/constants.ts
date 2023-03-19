@@ -1,9 +1,7 @@
-import LifeblocsFactoryJSON from "@contracts/LifeblocsFactory.json";
-import LifeblocsJSON from "@contracts/Lifeblocs.json";
+import LifeblocsContractJSON from "@contracts/LifeblocsContract.json";
 
 export const CONSTANTS = {
   addressZero: "0x0000000000000000000000000000000000000000",
-  lifeblocsFactoryAddress: process.env.REACT_APP_LIFEBLOCS_CONTRACT_FACTORY_ADDRESS!,
-  lifeblocsFactoryAbi: LifeblocsFactoryJSON.abi,
-  lifeblocsAbi: LifeblocsJSON.abi,
+  lifeblocsContractAddress: process.env.REACT_APP_CONTRACT_ADDRESS!,
+  lifeblocsContractAbi: LifeblocsContractJSON.abi,
 };
