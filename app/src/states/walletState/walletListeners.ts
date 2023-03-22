@@ -6,9 +6,9 @@ const onBrowserAccountsChanged = () => {
   const listener = (accounts: string[]) => {
     walletState.accounts.set(accounts);
   };
-  window.ethereum.on("accountsChanged", listener);
+  window.ethereum?.on("accountsChanged", listener);
 
-  return () => window.ethereum.removeListener("accountsChanged", listener);
+  return () => window.ethereum?.removeListener("accountsChanged", listener);
 };
 
 const onWalletAccountsChanged = () => {

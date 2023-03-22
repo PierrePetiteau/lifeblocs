@@ -18,5 +18,13 @@ module.exports = {
       url: "https://goerli.nodeguardians.io",
       accounts: [process.env.PRIVATE_KEY],
     },
+    polygon_mumbai: {
+      url: "https://rpc-mumbai.maticvigil.com",
+      accounts: [process.env.PRIVATE_KEY],
+    },
+    MATIC: {
+      url: "https://rpc-mumbai.maticvigil.com",
+      accounts: [process.env.PRIVATE_KEY],
+    },
   },
 };

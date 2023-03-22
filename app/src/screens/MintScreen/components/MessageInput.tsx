@@ -1,6 +1,6 @@
 import { TextInput } from "@atoms/TextInput/TextInput";
 import { StyleSheet } from "@helpers/style";
-import { mintFormState } from "@screens/MintScreen/states/mintFormState";
+import { mintForm } from "../states/mintForm";
 
 type Props = {
   index: number;
@@ -9,13 +9,13 @@ type Props = {
 export const MessageInput = ({ index }: Props) => {
   return (
     <TextInput
-      label={`${index + 1}/${mintFormState.items.length} · Write your message`}
+      label={`${index + 1}/${mintForm.state.items.length} · Write your message`}
       style={[styles.textInput]}
       placeholder={"Write my first book"}
       onChange={(value: string) => {
-        mintFormState.items[index].value?.set(value);
+        mintForm.state.items[index].value?.set(value);
       }}
-      value$={mintFormState.items[index].value}
+      value$={mintForm.state.items[index].value}
       maxLength={82}
     />
   );

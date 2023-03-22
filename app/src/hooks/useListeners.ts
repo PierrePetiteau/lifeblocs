@@ -1,21 +1,16 @@
-import { onAlertsChanged } from "@states/alertsState/alertsListeners";
-import { device } from "@states/device";
-import { wallet } from "@states/walletState";
 import { useEffect } from "react";
 
-export const useListeners = () => {
+type Dispose = () => void;
+type Listener = () => Dispose;
+
+export const useListeners = (listeners: Listener[]) => {
   useEffect(() => {
-    const listeners = [
-      device.listeners.onWindowResize(),
-      wallet.listeners.onBrowserAccountsChanged(),
-      wallet.listeners.onWalletAccountsChanged(),
-      onAlertsChanged(),
-    ];
+    const disposers = listeners.map((listener) => listener());
 
     const removeListeners = () => {
-      listeners.map((dispose) => dispose?.());
+      disposers.map((dispose) => dispose?.());
     };
 
     return removeListeners;
-  }, []);
+  }, [listeners]);
 };

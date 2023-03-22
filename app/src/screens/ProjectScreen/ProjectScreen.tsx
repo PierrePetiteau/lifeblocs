@@ -18,15 +18,15 @@ export const ProjectScreen = () => {
       <motion.div style={styles.body}>
         <Text variant="largeTitle">Unlock your success collection 🔓</Text>
         <Spacer value={16} />
-        {description.map((text) => (
-          <>
+        {description.map((text, index) => (
+          <motion.div key={index}>
             <motion.div style={styles.line}>
               <Text color={"gray10"}>{"-"}</Text>
               <Spacer horizontal value={12} />
               <Text color={"gray10"}>{text}</Text>
             </motion.div>
             <Spacer value={12} />
-          </>
+          </motion.div>
         ))}
       </motion.div>
     </motion.div>

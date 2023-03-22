@@ -1,19 +1,15 @@
 import React, { FC } from "react";
-import { View, ViewProps } from "@atoms/View";
+import { ViewProps } from "@atoms/View";
 import { reactive } from "@legendapp/state/react";
+import { motion, MotionStyle } from "framer-motion";
 
-type RowProps = ViewProps;
+type RowProps = ViewProps & { style?: MotionStyle };
 
-const RowComponent: FC<RowProps> = ({
-  children,
-  onClick,
-
-  ...props
-}) => {
+const RowComponent: FC<RowProps> = ({ children, onClick, style }) => {
   return (
-    <View {...props} display="flex" flexDirection={"row"} onClick={onClick}>
+    <motion.div style={{ display: "flex", flexDirection: "row", ...style }} onClick={onClick}>
       {children}
-    </View>
+    </motion.div>
   );
 };
 

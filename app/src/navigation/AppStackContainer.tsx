@@ -1,5 +1,3 @@
-import { useRef } from "react";
-
 import { View } from "@atoms/View";
 import { Header } from "@molecules/Header/Header";
 
@@ -15,9 +13,9 @@ import { AppLogoSVG } from "components/svg/AppLogoSVG";
 import { AppStack } from "@navigation/AppStack";
 import { WalletIndicator } from "@organisms/WalletIndicator";
 import { wallet } from "@states/walletState";
+import { StyleSheet } from "@helpers/style";
 
 export const AppStackContainer = () => {
-  const renderCount = ++useRef(0).current;
   const transparent0 = rgba(themeState.elevation1.get().toHex(), 1);
   const transparent80 = rgba(themeState.elevation1.get().toHex(), 0.2);
   const transparent100 = rgba(themeState.elevation1.get().toHex(), 0);
@@ -63,9 +61,7 @@ export const AppStackContainer = () => {
         <LeftMenu />
         <Button
           onClick={() => wallet.state.accounts.set([])}
-          right={24}
-          bottom={24}
-          position="absolute"
+          style={styles.buyMeACoffeeCTA}
           variant={"outlined"}
           color="secondary"
         >
@@ -80,4 +76,12 @@ export const AppStackContainer = () => {
       </View>
     </View>
   );
+};
+
+const styles: StyleSheet = {
+  buyMeACoffeeCTA: {
+    bottom: 24,
+    right: 24,
+    position: "absolute",
+  },
 };

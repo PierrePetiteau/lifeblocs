@@ -1,13 +1,9 @@
 import { ObservableArray } from "@legendapp/state";
 import { For } from "@legendapp/state/react";
 import { Hexagon } from "@organisms/HexagonList/helpers/createHexagon";
-import {
-  DELTA_XY,
-  HexagonListItem,
-  HEXAGON_LIST_WIDTH,
-  RenderHexagonListItem,
-} from "@organisms/HexagonList/HexagonListItem";
+import { DELTA_XY, HexagonListItem, RenderHexagonListItem } from "@organisms/HexagonList/HexagonListItem";
 import { ObservableObject } from "@legendapp/state";
+import { device } from "@states/device";
 
 const calculateScrollableContainerHeight = (containerWidth: number) => {
   const angle = Math.PI / 6; // 30° in radians
@@ -21,8 +17,6 @@ const calculateScrollableContainerHeight = (containerWidth: number) => {
   };
 };
 
-const containerHeight = calculateScrollableContainerHeight(HEXAGON_LIST_WIDTH);
-
 type Props<T> = {
   shape: Hexagon;
   items: ObservableArray<T[]>;
@@ -31,8 +25,10 @@ type Props<T> = {
 };
 
 export const HexagonList = <T extends { id: number }>({ shape, items, renderItem, renderPlaceholder }: Props<T>) => {
+  const listWidth = device.state.windows.width.peek() * 0.7;
+  const containerHeight = calculateScrollableContainerHeight(listWidth);
   const rowShift = shape.margin / DELTA_XY;
-  const hexPerRow = Math.max(1, Math.trunc(HEXAGON_LIST_WIDTH / (shape.width + rowShift)));
+  const hexPerRow = Math.max(1, Math.trunc(listWidth / (shape.width + rowShift)));
   const placeholdersAmount = 30 - (items.length % hexPerRow);
   const placeholders = Array.from({ length: placeholdersAmount }, (_, index) => ({ index: index + items.length }));
 
@@ -58,9 +54,10 @@ export const HexagonList = <T extends { id: number }>({ shape, items, renderItem
           transform: "translateX(-50%) translateY(-50%) rotate(30deg)",
           transformOrigin: "center center",
           height: containerHeight.total,
-          width: HEXAGON_LIST_WIDTH,
+          width: listWidth + shape.containerHeight,
           display: "flex",
           flexDirection: "column",
+          alignItems: "center",
         }}
       >
         <div
@@ -70,7 +67,7 @@ export const HexagonList = <T extends { id: number }>({ shape, items, renderItem
         />
         <div
           style={{
-            width: HEXAGON_LIST_WIDTH,
+            width: listWidth,
             display: "flex",
             justifyContent: "center",
             flexWrap: "wrap",
@@ -86,7 +83,7 @@ export const HexagonList = <T extends { id: number }>({ shape, items, renderItem
               const index = item.peek().id;
 
               return (
-                <HexagonListItem index={index} shape={shape}>
+                <HexagonListItem index={index} shape={shape} hexPerRow={hexPerRow}>
                   {renderItem({ item, shape })}
                 </HexagonListItem>
               );
@@ -94,7 +91,7 @@ export const HexagonList = <T extends { id: number }>({ shape, items, renderItem
           </For>
           {placeholders.map(({ index }) => {
             return (
-              <HexagonListItem key={index} index={index} shape={shape}>
+              <HexagonListItem key={index} index={index} shape={shape} hexPerRow={hexPerRow}>
                 {renderPlaceholder()}
               </HexagonListItem>
             );

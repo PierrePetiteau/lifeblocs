@@ -2,75 +2,52 @@ import { Row } from "@atoms/Row";
 import { Spacer } from "@atoms/Spacer";
 import { Text } from "@atoms/Text";
 import { StyleSheet } from "@helpers/style";
-import { observable } from "@legendapp/state";
-import { mintFormState } from "@screens/MintScreen/states/mintFormState";
-import { lifeblocs } from "@states/lifeblocsState";
-import { lifeBlocsListeners } from "@states/lifeblocsState/lifeblocsListeners";
-import { lifeblocsContract } from "@states/lifeblocsState/lifeblocsState";
-import { wallet } from "@states/walletState";
+import { Computed } from "@legendapp/state/react";
 import { motion } from "framer-motion";
-import { useEffect } from "react";
+import { useListeners } from "hooks/useListeners";
+import { mintForm } from "../states/mintForm";
+import { submitSteps } from "../states/submitSteps";
+import { SubmitStepKey } from "../states/submitSteps/submitStepsState";
 
 type Props = {
   index: number;
 };
 
-const stepsStatus = { initial: "", pending: "⏳", completed: "✅" };
-
-const computeWalletStatus = () => {
-  if (wallet.state.accounts.length > 0) {
-    return stepsStatus.completed;
-  }
-  return stepsStatus.initial;
-};
-
-const steps = observable([
-  { status: computeWalletStatus(), text: "Connect your wallet" },
-  { status: stepsStatus.initial, text: "Sign the transaction" },
-  { status: stepsStatus.initial, text: "Receive your NFT" },
-]);
+const { state, helpers, listeners } = submitSteps;
 
 export const SubmitInput = ({ index }: Props) => {
-  useEffect(() => {
-    const listeners = [
-      wallet.state.accounts.onChange(() => {
-        steps[0].status.set(computeWalletStatus());
-      }),
-    ];
-    const removeListeners = () => {
-      listeners.map((dispose) => dispose?.());
-    };
+  useListeners([listeners.onWalletAccountChange, listeners.onNftReceived]);
 
-    return removeListeners;
-  }, []);
+  const renderStep = (index: number, stepKey: SubmitStepKey) => (
+    <Computed>
+      {() => {
+        const isCurrentStep = helpers.isCurrentStep(stepKey);
+        const style = isCurrentStep ? undefined : styles.darken;
+        const label = `${index}. ${state[stepKey].label.get()}`;
+        const emoji = helpers.getEmojiFrom(stepKey);
+        const emojiCurrentIndicator = isCurrentStep ? "👈" : "";
+
+        return (
+          <Row style={style}>
+            <Text color="gray10">{label}</Text>
+            <Spacer horizontal value={12} />
+            <Text>{emoji ?? emojiCurrentIndicator}</Text>
+          </Row>
+        );
+      }}
+    </Computed>
+  );
 
   return (
     <>
-      <Text variant="callout">{`${index + 1}/${mintFormState.items.length} · Let’s mint your first badge`}</Text>
+      <Text variant="callout">{`${index + 1}/${mintForm.state.items.length} · Let’s mint your badge`}</Text>
       <Spacer value={16} />
       <motion.div>
-        {steps.map((step, index) => {
-          return (
-            <Row>
-              <Text color="gray10">{`${index}. ${step}`}</Text>
-              <Spacer horizontal value={12} />
-              <Text>✅</Text>
-            </Row>
-          );
-        })}
-        <Row>
-          <Text color="gray10">1. Sign the transaction</Text>
-          <Spacer horizontal value={12} />
-          <Text>✅</Text>
-        </Row>
+        {renderStep(1, "connect_wallet")}
         <Spacer value={12} />
-        <Row>
-          <Text color="gray10" style={[styles.darken]}>
-            2. Receive your NFT
-          </Text>
-          <Spacer horizontal value={12} />
-          <Text>⏳</Text>
-        </Row>
+        {renderStep(2, "sign_transaction")}
+        <Spacer value={12} />
+        {renderStep(3, "nft_received")}
       </motion.div>
     </>
   );
@@ -78,6 +55,6 @@ export const SubmitInput = ({ index }: Props) => {
 
 const styles: StyleSheet = {
   darken: {
-    filter: "brightness(0.3)",
+    filter: "brightness(0.5)",
   },
 };

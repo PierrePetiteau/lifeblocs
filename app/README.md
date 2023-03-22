@@ -1,5 +1,5 @@
 # TODO
 
-- Refacto contract to add events + security check
-- Implement a listener system with subscribtion on demand
+- Mint steps if wallet is already connected and state unsync user is blocked
+- Blocs section, when a new bloc is added, placeholders are not recomputed
 - 

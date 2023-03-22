@@ -3,17 +3,13 @@ import { BlocResponseItem, lifeblocsHelpers } from "@states/lifeblocsState/lifeb
 import { wallet } from "@states/walletState";
 
 const mintBloc = async (payload: { emoji: string; message: string }) => {
-  try {
-    const contract = lifeblocsHelpers.buildContract({ signer: wallet.helpers.getSigner() });
-    const method = "safeMint";
-    const params = [wallet.state.accounts[0].peek(), payload.emoji, payload.message, ""];
+  const contract = lifeblocsHelpers.buildContract({ signer: wallet.helpers.getSigner() });
+  const method = "safeMint";
+  const params = [wallet.state.accounts[0].peek(), payload.emoji, payload.message];
 
-    const txHash = await wallet.helpers.sendTransaction({ contract, method, params });
+  const txHash = await wallet.helpers.sendTransaction({ contract, method, params });
 
-    console.log("---------", "txHash", txHash);
-  } catch (error) {
-    console.log("---------", "error", error);
-  }
+  console.log("---------", "txHash", txHash);
 };
 
 const syncUserBlocs = async () => {
@@ -21,19 +17,10 @@ const syncUserBlocs = async () => {
   const ownerAddress = wallet.state.accounts[0].peek();
 
   const blocs: BlocResponseItem[] = await contract.getLifeFrom(ownerAddress);
-
-  lifeblocsState.blocs.set(lifeblocsHelpers.parseBlocs(blocs));
-
-  // const contract = lifeblocsHelpers.buildContract();
-  // const blocs = await contract.getBlocsFrom(wallet.state.accounts[0].peek());
-  // lifeblocsState.blocs.set(blocs);
-
-  // const response = await alchemy.nft.getNftsForContract(lifeblocsState.address.peek());
-  //     lifeblocsState.nfts.set(response.nfts.map((v) => ({ ...v, id: v.tokenId })));
-  //   } catch (error) {
-  //     lifeblocsState.nfts.set([]);
-  //     console.log("---------", "error", error);
-  //   }
+  const parsedBlocs = lifeblocsHelpers.parseBlocs(blocs);
+  console.log('---------', 'parsedBlocs', parsedBlocs);
+  
+  lifeblocsState.blocs.set(parsedBlocs);
 };
 
 export const lifeblocsModifiers = {

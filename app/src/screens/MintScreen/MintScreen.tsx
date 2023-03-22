@@ -5,8 +5,8 @@ import { createHexagon } from "@organisms/HexagonList/helpers/createHexagon";
 import { Text } from "@atoms/Text";
 import { Spacer } from "@atoms/Spacer";
 import { MintForm } from "./components/MintForm";
-import { mintFormState } from "./states/mintFormState";
 import { Computed } from "@legendapp/state/react";
+import { mintForm } from "./states/mintForm";
 
 const DEFAULT_EMOJI = "📖";
 const DEFAULT_MESSAGE = "Write my first book";
@@ -21,7 +21,7 @@ export const MintScreen = () => {
       <motion.div style={styles.internalContainer}>
         <Computed>
           {() => {
-            const current = mintFormState.currentItemId.get();
+            const current = mintForm.state.currentItemId.get();
             return (
               <HexagonSVG
                 height={`${hexagon.height}vmin`}
@@ -36,13 +36,13 @@ export const MintScreen = () => {
         <motion.div style={styles.emojisContainer}>
           <Computed>
             {() => {
-              const current = mintFormState.currentItemId.get();
+              const current = mintForm.state.currentItemId.get();
               const isDarken = current !== "emoji" && current !== "submit";
               const additionalStyle = isDarken ? styles.darken : {};
 
               return (
                 <Text style={[styles.emoji, additionalStyle]} rotateZ={-15} placeholder={DEFAULT_EMOJI}>
-                  {mintFormState.items[1].value?.get()}
+                  {mintForm.state.items[1].value?.get()}
                 </Text>
               );
             }}
@@ -50,7 +50,7 @@ export const MintScreen = () => {
 
           <Computed>
             {() => {
-              const current = mintFormState.currentItemId.get();
+              const current = mintForm.state.currentItemId.get();
               const isDarken = current !== "submit";
               const additionalStyle = isDarken ? styles.darken : {};
               return (
@@ -64,13 +64,13 @@ export const MintScreen = () => {
         <motion.div style={styles.labelContainer}>
           <Computed>
             {() => {
-              const current = mintFormState.currentItemId.get();
+              const current = mintForm.state.currentItemId.get();
               const isDarken = current !== "message" && current !== "submit";
               const additionalStyle = isDarken ? styles.darken : {};
 
               return (
                 <Text placeholder={DEFAULT_MESSAGE} style={[styles.label, additionalStyle]}>
-                  {mintFormState.items[0].value?.get()}
+                  {mintForm.state.items[0].value?.get()}
                 </Text>
               );
             }}

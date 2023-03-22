@@ -1,13 +1,12 @@
 import { View } from "@atoms/View";
 import { AppStackContainer } from "@navigation/AppStackContainer";
 import { Alert } from "@organisms/Alert";
+import { useAppListeners } from "hooks/useAppListeners";
 import React from "react";
 import "./App.css";
 
-import { useListeners } from "hooks/useListeners";
-
 function App() {
-  useListeners();
+  useAppListeners();
 
   return (
     <>

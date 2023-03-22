@@ -24,16 +24,12 @@ const buildUnsignedTx = async ({ contract, method, params }: BuildUnsignedTxPara
 
 type SendTransactionParams = BuildUnsignedTxParams;
 const sendTransaction = async ({ contract, method, params }: SendTransactionParams) => {
-  try {
-    const unsignedTx = await buildUnsignedTx({ contract, method, params });
-    const txHash = await window.ethereum.request({
-      method: "eth_sendTransaction",
-      params: [unsignedTx],
-    });
-    return txHash;
-  } catch (error) {
-    console.log("---------", "error", error);
-  }
+  const unsignedTx = await buildUnsignedTx({ contract, method, params });
+  const txHash = await window.ethereum.request({
+    method: "eth_sendTransaction",
+    params: [unsignedTx],
+  });
+  return txHash;
 };
 
 export const walletHelpers = {

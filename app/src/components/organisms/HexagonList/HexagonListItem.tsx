@@ -1,9 +1,6 @@
 import { ObservableObject } from "@legendapp/state";
 import { ReactElement } from "react";
 import { Hexagon } from "@organisms/HexagonList/helpers/createHexagon";
-import { device } from "@states/device";
-
-export const HEXAGON_LIST_WIDTH = device.state.windows.width.peek() * 0.8;
 
 /**
  * Usefull to compute coordinate x from coordinate y in trigonometry
@@ -16,12 +13,12 @@ export type RenderHexagonListItem<T> = (props: { item: ObservableObject<T>; shap
 type Props = {
   index: number;
   shape: Hexagon;
+  hexPerRow: number;
   children?: JSX.Element;
 };
 
-export const HexagonListItem = ({ index, shape, children }: Props) => {
+export const HexagonListItem = ({ index, shape, hexPerRow, children }: Props) => {
   const rowShift = shape.margin / DELTA_XY;
-  const hexPerRow = Math.max(1, Math.trunc(HEXAGON_LIST_WIDTH / (shape.width + rowShift)));
   const rowIndex = Math.trunc(index / hexPerRow);
   const translateX = rowIndex * (shape.width * 0.5 + rowShift);
 

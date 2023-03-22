@@ -17,14 +17,11 @@ export const LeftMenu: FC<Props> = () => {
             const onClick = () => {
               navigate(item.id.peek());
             };
+            const isFocused = item.id.get() === navigationState.currentItemId?.get();
+            const buttonColor = isFocused ? "white" : "secondary";
             return (
               <View flexDirection="row" marginVertical={20}>
-                <Button
-                  onClick={onClick}
-                  title$={() => item.title.peek()}
-                  variant={"outlined"}
-                  color$={() => (item.id.get() === navigationState.currentItemId?.get() ? "white" : "secondary")}
-                />
+                <Button onClick={onClick} title={item.title.peek()} variant={"outlined"} color={buttonColor} />
                 <Spacer />
               </View>
             );

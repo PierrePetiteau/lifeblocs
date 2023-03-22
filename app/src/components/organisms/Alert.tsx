@@ -2,10 +2,11 @@ import { Row } from "@atoms/Row";
 import { Spacer } from "@atoms/Spacer";
 import { Text } from "@atoms/Text";
 import { View } from "@atoms/View";
+import { StyleSheet } from "@helpers/style";
 import { Computed, reactive } from "@legendapp/state/react";
 import { alertsState } from "@states/alertsState/alertsState";
 import { themeState } from "@states/themeState/themeState";
-import { AnimatePresence, motion, Variant } from "framer-motion";
+import { motion, Variant } from "framer-motion";
 
 const Div = reactive(motion.div);
 type Variants<Keys extends string> = {
@@ -34,9 +35,9 @@ export const Alert = () => {
         }
 
         return (
-          <Div style={{ position: "absolute", top: 24, left: "50%", transform: "translateX(-50%)" }}>
+          <Div style={styles.container}>
             <View backgroundColor="elevation2" borderRadius={10} overflow="hidden">
-              <Row paddingHorizontal={24} paddingVertical={8}>
+              <Row style={styles.rowContainer}>
                 <Text variant="title1" rotateZ={-5}>
                   {alert.icon}
                 </Text>
@@ -60,4 +61,19 @@ export const Alert = () => {
       }}
     </Computed>
   );
+};
+
+const styles: StyleSheet = {
+  container: {
+    position: "absolute",
+    top: 24,
+    left: "50%",
+    transform: "translateX(-50%)",
+  },
+  rowContainer: {
+    paddingLeft: 24,
+    paddingRight: 34,
+    paddingTop: 8,
+    paddingBottom: 8,
+  },
 };
