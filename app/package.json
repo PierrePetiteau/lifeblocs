@@ -1,6 +1,7 @@
 {
   "name": "lifeblocs",
   "version": "0.1.0",
+  "homepage": "https://pierrepetiteau.github.io/lifeblocs",
   "private": true,
   "dependencies": {
     "@legendapp/state": "^0.23.2",
