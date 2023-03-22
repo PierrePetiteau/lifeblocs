@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/static/css/main.759dff24.css",
+    "main.js": "/static/js/main.3beef58f.js",
+    "static/js/307.f1927392.chunk.js": "/static/js/307.f1927392.chunk.js",
+    "static/js/536.71e91e88.chunk.js": "/static/js/536.71e91e88.chunk.js",
+    "static/js/27.9812eb89.chunk.js": "/static/js/27.9812eb89.chunk.js",
+    "static/media/Tourney-VariableFont_wdth,wght.ttf": "/static/media/Tourney-VariableFont_wdth,wght.f094411952c3a9e051e3.ttf",
+    "index.html": "/index.html"
+  },
+  "entrypoints": [
+    "static/css/main.759dff24.css",
+    "static/js/main.3beef58f.js"
+  ]
+}
