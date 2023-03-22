@@ -1,5 +1,5 @@
 {
-  "name": "achievements",
+  "name": "lifeblocs",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -25,7 +25,9 @@
     "start": "craco start",
     "build": "craco build",
     "test": "craco test",
-    "eject": "craco eject"
+    "eject": "craco eject",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": [
@@ -47,6 +49,7 @@
   },
   "devDependencies": {
     "@craco/craco": "^7.0.0",
-    "@types/tinycolor2": "^1.4.3"
+    "@types/tinycolor2": "^1.4.3",
+    "gh-pages": "^5.0.0"
   }
 }
