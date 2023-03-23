@@ -1,15 +1,16 @@
 {
   "files": {
-    "main.css": "/lifeblocs/static/css/main.cde2cfa8.css",
-    "main.js": "/lifeblocs/static/js/main.46cec33f.js",
+    "main.css": "/lifeblocs/static/css/main.8ba63d3c.css",
+    "main.js": "/lifeblocs/static/js/main.8403d05e.js",
     "static/js/307.5b6ca142.chunk.js": "/lifeblocs/static/js/307.5b6ca142.chunk.js",
     "static/js/536.9e2af69a.chunk.js": "/lifeblocs/static/js/536.9e2af69a.chunk.js",
     "static/js/27.1f02d242.chunk.js": "/lifeblocs/static/js/27.1f02d242.chunk.js",
+    "static/media/NotoColorEmoji-Regular.ttf": "/lifeblocs/static/media/NotoColorEmoji-Regular.48696e677fd7753d1a35.ttf",
     "static/media/Tourney-VariableFont_wdth,wght.ttf": "/lifeblocs/static/media/Tourney-VariableFont_wdth,wght.f094411952c3a9e051e3.ttf",
     "index.html": "/lifeblocs/index.html"
   },
   "entrypoints": [
-    "static/css/main.cde2cfa8.css",
-    "static/js/main.46cec33f.js"
+    "static/css/main.8ba63d3c.css",
+    "static/js/main.8403d05e.js"
   ]
 }
