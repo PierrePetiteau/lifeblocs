@@ -1,7 +1,7 @@
 import { Spacer } from "@atoms/Spacer";
 import { Text } from "@atoms/Text";
 import { StyleSheet } from "@helpers/style";
-import EmojiPicker, { Theme } from "emoji-picker-react";
+import EmojiPicker, { EmojiStyle, Theme } from "emoji-picker-react";
 import { mintForm } from "../states/mintForm";
 
 type Props = {
@@ -16,6 +16,7 @@ export const EmojiInput = ({ index }: Props) => {
       </Text>
       <Spacer value={4} />
       <EmojiPicker
+        emojiStyle={EmojiStyle.GOOGLE}
         width={"30vw"}
         theme={Theme.DARK}
         previewConfig={{ showPreview: false }}
