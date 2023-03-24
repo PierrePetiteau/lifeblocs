@@ -1,4 +1,6 @@
 import { observable } from "@legendapp/state";
+import { persistObservable } from "@legendapp/state/persist";
+import { ObservablePersistLocalStorage } from "@legendapp/state/persist-plugins/local-storage";
 import { wallet } from "@states/walletState";
 
 export type StepStatus = "initial" | "pending" | "completed";
@@ -29,3 +31,5 @@ export const getInitialSteps: () => Steps = () => ({
 });
 
 export const submitStepsState = observable(getInitialSteps());
+
+persistObservable(submitStepsState, { local: "submitStepsState", persistLocal: ObservablePersistLocalStorage });

@@ -3,7 +3,6 @@ import { View } from "@atoms/View";
 import { Spacer } from "@atoms/Spacer";
 import { MouseFollower } from "@atoms/MouseFollower";
 import { Computed } from "@legendapp/state/react";
-import { isAlertAlreadyExist, showSuccessAlert, showWarningAlert } from "@states/alertsState/alertsModifiers";
 import { wallet } from "@states/walletState";
 
 export const WalletIndicator = () => {
@@ -14,14 +13,7 @@ export const WalletIndicator = () => {
         const hasAccount = Boolean(account);
         const onClick = () => {
           if (hasAccount) {
-            navigator.clipboard.writeText(account);
-            const copiedAlert = { id: "copied", message: "Copied !", duration: 1000 };
-            const alreadyCopiedAlert = { id: "already copied", message: "Already copied !", duration: 1000 };
-            if (!isAlertAlreadyExist(copiedAlert.id)) {
-              showSuccessAlert(copiedAlert);
-            } else if (!isAlertAlreadyExist(alreadyCopiedAlert.id)) {
-              showWarningAlert(alreadyCopiedAlert);
-            }
+            wallet.state.accounts.set([]);
           } else {
             wallet.modifiers.tryConnectWallet();
           }
