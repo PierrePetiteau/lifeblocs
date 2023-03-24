@@ -12,7 +12,6 @@ import { rgba } from "@states/themeState/colors";
 import { AppLogoSVG } from "components/svg/AppLogoSVG";
 import { AppStack } from "@navigation/AppStack";
 import { WalletIndicator } from "@organisms/WalletIndicator";
-import { wallet } from "@states/walletState";
 import { StyleSheet } from "@helpers/style";
 import { lifeblocs } from "@states/lifeblocsState";
 
@@ -46,7 +45,7 @@ export const AppStackContainer = () => {
       />
       <Header
         headerLeft={
-          <Row alignItems={"center"} onClick={() => window.location.reload()}>
+          <Row onClick={() => window.location.reload()} style={styles.logoContainer}>
             <AppLogoSVG width={50} height={50} />
             <Spacer value={12} horizontal />
             <Text variant="title1">Lifeblocs</Text>
@@ -86,5 +85,8 @@ const styles: StyleSheet = {
     bottom: 24,
     right: 24,
     position: "absolute",
+  },
+  logoContainer: {
+    cursor: "pointer",
   },
 };

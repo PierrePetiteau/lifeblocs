@@ -1,9 +1,8 @@
-import React, { FC } from "react";
-import { ViewProps } from "@atoms/View";
+import React, { FC, ReactElement } from "react";
 import { reactive } from "@legendapp/state/react";
 import { motion, MotionStyle } from "framer-motion";
 
-type RowProps = ViewProps & { style?: MotionStyle };
+type RowProps = { style?: MotionStyle; onClick?: () => void; children?: ReactElement | null | (ReactElement | null)[] };
 
 const RowComponent: FC<RowProps> = ({ children, onClick, style }) => {
   return (
