@@ -21,7 +21,10 @@ type BigIntWithToNumber = BigInt & { toNumber(): number };
 export type BlocResponseItem = [BigIntWithToNumber, string, string, BigIntWithToNumber];
 
 const parseBlocs: (blocs: BlocResponseItem[]) => Bloc[] = (blocs) => {
-  const items = blocs.filter((v) => v[v.length - 1]);
+  const items = blocs.filter((v) => {
+    const hasCreationDate = Boolean(Number(v[v.length - 1]));
+    return hasCreationDate;
+  });
   const parsedItems: Bloc[] = items.reverse().map((v, index) => ({
     id: index,
     tokenId: v[0].toNumber(),
@@ -30,6 +33,7 @@ const parseBlocs: (blocs: BlocResponseItem[]) => Bloc[] = (blocs) => {
     createdAt: v[3].toNumber() * 1000,
     isPlaceholder: false,
   }));
+  console.log("---------", "parsedItems", parsedItems);
 
   return parsedItems;
 };

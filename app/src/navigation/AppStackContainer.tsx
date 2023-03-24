@@ -14,6 +14,7 @@ import { AppStack } from "@navigation/AppStack";
 import { WalletIndicator } from "@organisms/WalletIndicator";
 import { wallet } from "@states/walletState";
 import { StyleSheet } from "@helpers/style";
+import { lifeblocs } from "@states/lifeblocsState";
 
 export const AppStackContainer = () => {
   const transparent0 = rgba(themeState.elevation1.get().toHex(), 1);
@@ -60,7 +61,9 @@ export const AppStackContainer = () => {
       <View flexDirection="row" flex={1}>
         <LeftMenu />
         <Button
-          onClick={() => wallet.state.accounts.set([])}
+          onClick={() => {
+            lifeblocs.modifiers.syncUserBlocs();
+          }}
           style={styles.buyMeACoffeeCTA}
           variant={"outlined"}
           color="secondary"
