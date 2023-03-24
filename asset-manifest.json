@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/lifeblocs/static/css/main.8ba63d3c.css",
-    "main.js": "/lifeblocs/static/js/main.e85a5595.js",
+    "main.js": "/lifeblocs/static/js/main.dc1e1fed.js",
     "static/js/307.5b6ca142.chunk.js": "/lifeblocs/static/js/307.5b6ca142.chunk.js",
     "static/js/536.9e2af69a.chunk.js": "/lifeblocs/static/js/536.9e2af69a.chunk.js",
     "static/js/27.1f02d242.chunk.js": "/lifeblocs/static/js/27.1f02d242.chunk.js",
@@ -11,6 +11,6 @@
   },
   "entrypoints": [
     "static/css/main.8ba63d3c.css",
-    "static/js/main.e85a5595.js"
+    "static/js/main.dc1e1fed.js"
   ]
 }
