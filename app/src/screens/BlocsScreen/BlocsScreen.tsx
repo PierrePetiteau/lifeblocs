@@ -14,7 +14,7 @@ export const BlocsScreen = () => {
     <HexagonList
       shape={shape}
       items={items}
-      renderItem={({ item, shape }) => <HexagonBloc item={item} shape={shape} />}
+      renderItem={({ item, shape }) => <HexagonBloc label={item.label} emoji={item.emoji} shape={shape} />}
       renderPlaceholder={() => <HexagonBlocPlaceholder shape={shape} />}
     />
   );

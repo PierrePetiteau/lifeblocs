@@ -10,7 +10,7 @@ export const Spacer: FC<SpacerProps> = ({ horizontal = false, value }) => {
     flexDirection: horizontal ? "row" : "column",
     height: !horizontal && value ? value : undefined,
     width: horizontal && value ? value : undefined,
-    flexGrow: !value ? 1 : undefined,
+    flexGrow: value === undefined ? 1 : undefined,
   };
 
   return <div style={variantStyle} />;
